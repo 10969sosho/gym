@@ -35,6 +35,7 @@ Route::prefix('member')->name('member.')->group(function () {
         Route::get('/payments/{payment}', [MemberPaymentController::class, 'show'])->name('payments.show');
         Route::get('/notifications', [MemberNotificationController::class, 'index'])->name('notifications.index');
         Route::get('/notifications/{notification}', [MemberNotificationController::class, 'show'])->name('notifications.show');
+        Route::get('/account', [MemberDashboardController::class, 'account'])->name('account');
     });
 });
 

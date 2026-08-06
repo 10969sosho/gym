@@ -18,4 +18,12 @@ class DashboardController extends Controller
 
         return view('member.dashboard', compact('member', 'payments', 'notifications', 'unreadCount'));
     }
+
+    public function account()
+    {
+        $member = auth()->guard('member')->user();
+        $totalPayments = Payment::where('member_id', $member->id)->where('payment_status', 'paid')->sum('amount');
+        $totalTransactions = Payment::where('member_id', $member->id)->count();
+        return view('member.account', compact('member', 'totalPayments', 'totalTransactions'));
+    }
 }

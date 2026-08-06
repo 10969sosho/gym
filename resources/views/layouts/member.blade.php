@@ -35,9 +35,9 @@
             <a href="{{ route('member.notifications.index') }}" class="nav-item flex flex-col items-center text-xs {{ request()->routeIs('member.notifications*') ? 'active' : 'text-gray-500' }}">
                 <i class="fas fa-chart-line text-lg mb-1"></i> Aktivitas
             </a>
-            <div class="nav-item flex flex-col items-center text-xs text-gray-500">
+            <a href="{{ route('member.account') }}" class="nav-item flex flex-col items-center text-xs {{ request()->routeIs('member.account') ? 'active' : 'text-gray-500' }}">
                 <i class="fas fa-user text-lg mb-1"></i> Akun
-            </div>
+            </a>
         </nav>
     </div>
     @stack('scripts')

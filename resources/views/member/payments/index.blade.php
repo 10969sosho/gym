@@ -1,53 +1,58 @@
 @extends('layouts.member')
-@section('title', 'Payment History')
+@section('title', 'Pembayaran')
 @section('content')
-<div class="mb-4">
-    <h1 class="text-xl font-bold text-gray-800">Payment History</h1>
-    <p class="text-gray-500 text-sm">Riwayat transaksi membership</p>
-</div>
-
-<form action="{{ route('member.payments.index') }}" method="GET" class="mb-4">
-    <div class="flex">
-        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari invoice..."
-            class="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-r-lg hover:bg-indigo-700">
-            <i class="fas fa-search"></i>
-        </button>
+<div class="px-4 pt-6 pb-4">
+    <div class="flex items-center justify-between mb-2">
+        <h1 class="text-2xl font-bold text-white">Riwayat Pembayaran</h1>
+        <a href="{{ route('member.notifications.index') }}" class="relative text-white">
+            <i class="fas fa-bell text-xl"></i>
+        </a>
     </div>
-</form>
+    <p class="text-gray-400 text-sm mb-6">Riwayat transaksi membership</p>
 
-@forelse($payments as $payment)
-    <a href="{{ route('member.payments.show', $payment) }}" class="block bg-white rounded-lg p-4 mb-3 shadow-sm hover:shadow-md transition">
-        <div class="flex justify-between items-start">
-            <div>
-                <p class="font-bold text-gray-800">{{ $payment->invoice_number }}</p>
-                <p class="text-xs text-gray-500 mt-1">
-                    <i class="fas fa-calendar mr-1"></i>{{ $payment->transaction_date->format('d M Y') }}
-                </p>
-                <p class="text-xs text-gray-500 mt-1">
-                    <i class="fas fa-clock mr-1"></i>{{ $payment->membership_period }}
-                </p>
-            </div>
-            <div class="text-right">
-                <p class="font-bold text-gray-800">Rp {{ number_format($payment->amount, 0, ',', '.') }}</p>
-                @if($payment->payment_status === 'paid')
-                    <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full mt-1 inline-block">Paid</span>
-                @elseif($payment->payment_status === 'pending')
-                    <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full mt-1 inline-block">Pending</span>
-                @else
-                    <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full mt-1 inline-block">Overdue</span>
-                @endif
-            </div>
+    <form action="{{ route('member.payments.index') }}" method="GET" class="mb-4">
+        <div class="flex">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari invoice..."
+                class="flex-1 px-4 py-3 bg-[#1a1a1a] border border-gray-800 rounded-l-xl text-white text-sm focus:outline-none focus:border-yellow-500">
+            <button type="submit" class="bg-gold text-black px-4 py-3 rounded-r-xl font-medium">
+                <i class="fas fa-search"></i>
+            </button>
         </div>
-    </a>
-@empty
-    <div class="bg-white rounded-lg p-8 text-center">
-        <i class="fas fa-receipt text-4xl text-gray-300 mb-3"></i>
-        <p class="text-gray-500">Belum ada pembayaran</p>
-    </div>
-@endforelse
+    </form>
 
-<div class="mt-4">
-    {{ $payments->links() }}
+    @forelse($payments as $payment)
+        <a href="{{ route('member.payments.show', $payment) }}" class="block card-dark rounded-xl p-4 mb-3 border border-gray-800">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-white font-bold text-sm">{{ $payment->invoice_number }}</p>
+                    <p class="text-gray-400 text-xs mt-2">
+                        <i class="fas fa-calendar mr-1"></i>{{ $payment->transaction_date->format('d M Y') }}
+                    </p>
+                    <p class="text-gray-400 text-xs mt-1">
+                        <i class="fas fa-clock mr-1"></i>{{ $payment->membership_period }}
+                    </p>
+                </div>
+                <div class="text-right">
+                    <p class="text-white font-bold text-sm">Rp {{ number_format($payment->amount, 0, ',', '.') }}</p>
+                    @if($payment->payment_status === 'paid')
+                        <span class="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full mt-2 inline-block">Paid</span>
+                    @elseif($payment->payment_status === 'pending')
+                        <span class="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full mt-2 inline-block">Pending</span>
+                    @else
+                        <span class="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full mt-2 inline-block">Overdue</span>
+                    @endif
+                </div>
+            </div>
+        </a>
+    @empty
+        <div class="card-dark rounded-xl p-8 text-center border border-gray-800">
+            <i class="fas fa-receipt text-4xl text-gray-600 mb-3"></i>
+            <p class="text-gray-400">Belum ada pembayaran</p>
+        </div>
+    @endforelse
+
+    <div class="mt-4">
+        {{ $payments->links() }}
+    </div>
 </div>
 @endsection

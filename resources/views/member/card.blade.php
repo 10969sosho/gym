@@ -32,7 +32,9 @@
                             <img src="{{ asset('storage/' . $member->photo) }}" class="w-full h-full object-cover">
                         </div>
                     @endif
-                    <p class="text-gold text-sm font-medium">{{ $member->member_id }}</p>
+                </div>
+                <div class="absolute bottom-10 left-1/2 -translate-x-1/2">
+                    <p class="text-gold text-sm font-bold">{{ $member->member_id }}</p>
                 </div>
                 <a href="{{ route('member.card.qr') }}" class="bg-white rounded-xl p-2 shadow-lg">
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data={{ $member->member_id }}" alt="QR" class="w-20 h-20">

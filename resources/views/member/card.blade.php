@@ -33,7 +33,7 @@
                         </div>
                     @endif
                 </div>
-                <div class="absolute bottom-10 left-1/2 ml-6">
+                <div class="absolute bottom-10 left-5">
                     <p class="text-gold text-sm font-bold">{{ $member->member_id }}</p>
                 </div>
                 <a href="{{ route('member.card.qr') }}" class="bg-white rounded-xl p-2 shadow-lg">

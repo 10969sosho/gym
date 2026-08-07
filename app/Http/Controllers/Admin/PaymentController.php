@@ -85,6 +85,12 @@ class PaymentController extends Controller
         return redirect()->route('admin.payments.index')->with('success', 'Pembayaran berhasil diupdate.');
     }
 
+    public function memberPayments(Member $member)
+    {
+        $payments = $member->payments()->latest()->get();
+        return view('admin.payments.member-detail', compact('member', 'payments'));
+    }
+
     public function destroy(Payment $payment)
     {
         if ($payment->invoice_file) {

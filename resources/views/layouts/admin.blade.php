@@ -98,27 +98,25 @@
             document.getElementById('mobileMenu').classList.add('hidden');
         });
 
-        function openDrawer(drawerId) {
+        function openDrawer(drawerId, skipReset = false) {
             const drawer = document.getElementById(drawerId);
             const overlay = drawer.querySelector('.drawer-overlay');
             const panel = drawer.querySelector('.drawer-panel');
             const form = drawer.querySelector('form');
             const title = drawer.querySelector('.drawer-title');
             
-            // Reset form for create mode
-            if (form) {
-                form.reset();
-                // Remove method field if exists (for create mode)
-                const methodField = form.querySelector('input[name="_method"]');
-                if (methodField) {
-                    methodField.remove();
+            if (!skipReset) {
+                if (form) {
+                    form.reset();
+                    const methodField = form.querySelector('input[name="_method"]');
+                    if (methodField) {
+                        methodField.remove();
+                    }
+                    form.action = form.dataset.storeAction || form.action;
                 }
-                // Reset action to store route
-                form.action = form.dataset.storeAction || form.action;
-            }
-            // Reset title
-            if (title) {
-                title.textContent = title.dataset.defaultTitle || title.textContent;
+                if (title) {
+                    title.textContent = title.dataset.defaultTitle || title.textContent;
+                }
             }
             
             drawer.classList.remove('hidden');
@@ -153,12 +151,10 @@
             const form = drawer.querySelector('form');
             const title = drawer.querySelector('.drawer-title');
             
-            // Update form action
             if (data.id) {
                 const actionUrl = form.dataset.editAction.replace(':id', data.id);
                 form.action = actionUrl;
                 
-                // Add or update method field for PUT
                 let methodField = form.querySelector('input[name="_method"]');
                 if (!methodField) {
                     methodField = document.createElement('input');
@@ -169,13 +165,11 @@
                 methodField.value = 'PUT';
             }
             
-            // Populate form fields
             Object.keys(data).forEach(key => {
                 if (key === 'id') return;
                 const input = form.querySelector(`[name="${key}"]`);
                 if (input) {
                     if (input.type === 'file') {
-                        // Skip file inputs
                     } else if (input.tagName === 'SELECT') {
                         input.value = data[key];
                     } else {
@@ -184,12 +178,11 @@
                 }
             });
             
-            // Update drawer title
             if (title && data.name) {
                 title.textContent = 'Edit: ' + data.name;
             }
             
-            openDrawer(drawerId);
+            openDrawer(drawerId, true);
         }
     </script>
     @stack('scripts')

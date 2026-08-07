@@ -43,5 +43,6 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('members', AdminMemberController::class);
     Route::resource('payments', AdminPaymentController::class)->except(['show']);
+    Route::get('members/{member}/payments', [AdminPaymentController::class, 'memberPayments'])->name('members.payments');
     Route::resource('notifications', AdminNotificationController::class)->except(['show']);
 });

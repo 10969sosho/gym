@@ -27,13 +27,10 @@
                 <i class="fas fa-home text-lg mb-1"></i> Beranda
             </a>
             <a href="{{ route('member.payments.index') }}" class="nav-item flex flex-col items-center text-xs {{ request()->routeIs('member.payments*') ? 'active' : 'text-gray-500' }}">
-                <i class="fas fa-calendar-alt text-lg mb-1"></i> Jadwal
+                <i class="fas fa-history text-lg mb-1"></i> History
             </a>
             <a href="{{ route('member.card') }}" class="nav-item flex flex-col items-center text-xs {{ request()->routeIs('member.card*') ? 'active' : 'text-gray-500' }}">
                 <i class="fas fa-id-card text-lg mb-1"></i> Kartu
-            </a>
-            <a href="{{ route('member.notifications.index') }}" class="nav-item flex flex-col items-center text-xs {{ request()->routeIs('member.notifications*') ? 'active' : 'text-gray-500' }}">
-                <i class="fas fa-chart-line text-lg mb-1"></i> Aktivitas
             </a>
             <a href="{{ route('member.account') }}" class="nav-item flex flex-col items-center text-xs {{ request()->routeIs('member.account') ? 'active' : 'text-gray-500' }}">
                 <i class="fas fa-user text-lg mb-1"></i> Akun

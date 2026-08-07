@@ -67,30 +67,6 @@
     </div>
 
     <div class="mb-6">
-        <div class="flex items-center justify-between mb-3">
-            <h2 class="text-white font-bold text-lg">Benefit Member</h2>
-            <button class="text-gold text-sm font-medium">Lihat Semua</button>
-        </div>
-        <div class="grid grid-cols-3 gap-3">
-            <div class="card-dark rounded-xl p-4 text-center border border-gray-800">
-                <i class="fas fa-star text-gold text-2xl mb-2"></i>
-                <p class="text-white font-bold text-xl">1.250</p>
-                <p class="text-gray-400 text-xs">Total Poin</p>
-            </div>
-            <div class="card-dark rounded-xl p-4 text-center border border-gray-800">
-                <i class="fas fa-gift text-gold text-2xl mb-2"></i>
-                <p class="text-white font-bold text-xl">3</p>
-                <p class="text-gray-400 text-xs">Reward</p>
-            </div>
-            <div class="card-dark rounded-xl p-4 text-center border border-gray-800">
-                <i class="fas fa-calendar-check text-gold text-2xl mb-2"></i>
-                <p class="text-white font-bold text-xl">12</p>
-                <p class="text-gray-400 text-xs">Check-in</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="mb-6">
         <h2 class="text-white font-bold text-lg mb-3">Recent Payments</h2>
         @forelse($payments as $payment)
             <a href="{{ route('member.payments.show', $payment) }}" class="block card-dark rounded-xl p-4 mb-3 border border-gray-800">

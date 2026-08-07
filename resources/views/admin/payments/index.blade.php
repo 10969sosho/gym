@@ -23,8 +23,8 @@
         <table class="w-full text-sm">
             <thead>
                 <tr class="bg-gray-50 text-left">
-                    <th class="px-4 py-3 text-gray-500 font-medium">Invoice</th>
                     <th class="px-4 py-3 text-gray-500 font-medium">Member</th>
+                    <th class="px-4 py-3 text-gray-500 font-medium">Period</th>
                     <th class="px-4 py-3 text-gray-500 font-medium">Date</th>
                     <th class="px-4 py-3 text-gray-500 font-medium">Amount</th>
                     <th class="px-4 py-3 text-gray-500 font-medium">Status</th>
@@ -35,13 +35,10 @@
                 @forelse($payments as $payment)
                 <tr class="border-b hover:bg-gray-50">
                     <td class="px-4 py-3">
-                        <p class="font-medium">{{ $payment->invoice_number }}</p>
-                        <p class="text-xs text-gray-500">{{ $payment->membership_period }}</p>
-                    </td>
-                    <td class="px-4 py-3">
                         <p class="font-medium">{{ $payment->member->name }}</p>
                         <p class="text-xs text-gray-500">{{ $payment->member->member_id }}</p>
                     </td>
+                    <td class="px-4 py-3 text-gray-600">{{ $payment->membership_period }}</td>
                     <td class="px-4 py-3 text-gray-600">{{ $payment->transaction_date->format('d M Y') }}</td>
                     <td class="px-4 py-3 font-medium">Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
                     <td class="px-4 py-3">
@@ -55,6 +52,9 @@
                     </td>
                     <td class="px-4 py-3">
                         <div class="flex items-center space-x-2">
+                            <button onclick="openMemberPaymentDrawer({{ $payment->member_id }}, '{{ addslashes($payment->member->name) }}')" class="text-indigo-600 hover:text-indigo-800" title="Detail Customer">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
                             <button onclick="openEditDrawer('paymentDrawer', {
                                 id: {{ $payment->id }},
                                 member_id: {{ $payment->member_id }},
@@ -73,6 +73,19 @@
                                 </button>
                             </form>
                         </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                        <i class="fas fa-money-bill-wave text-3xl text-gray-300 mb-2"></i>
+                        <p>Tidak ada pembayaran ditemukan</p>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
                     </td>
                 </tr>
                 @empty
@@ -179,4 +192,55 @@
     });
 </script>
 @endif
+
+{{-- Drawer for Member Payment Detail --}}
+<div id="memberPaymentDrawer" class="fixed inset-0 z-50 hidden">
+    <div class="drawer-overlay fixed inset-0 bg-black bg-opacity-50 opacity-0" onclick="closeDrawer('memberPaymentDrawer')"></div>
+    <div class="drawer-panel fixed top-0 right-0 h-full w-full max-w-lg bg-white shadow-xl transform translate-x-full">
+        <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between p-4 border-b flex-shrink-0">
+                <h3 class="text-lg font-bold text-gray-800" id="memberPaymentTitle">Detail Customer</h3>
+                <button onclick="closeDrawer('memberPaymentDrawer')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4">
+                <div id="memberPaymentContent" class="text-center text-gray-500 text-sm py-8">
+                    <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
+                    <p>Loading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function openMemberPaymentDrawer(memberId, memberName) {
+        const drawer = document.getElementById('memberPaymentDrawer');
+        const overlay = drawer.querySelector('.drawer-overlay');
+        const panel = drawer.querySelector('.drawer-panel');
+        const title = document.getElementById('memberPaymentTitle');
+        const content = document.getElementById('memberPaymentContent');
+
+        title.textContent = memberName;
+        content.innerHTML = '<div class="text-center text-gray-500 text-sm py-8"><i class="fas fa-spinner fa-spin text-2xl mb-2"></i><p>Loading...</p></div>';
+
+        drawer.classList.remove('hidden');
+        setTimeout(() => {
+            overlay.classList.remove('opacity-0');
+            overlay.classList.add('opacity-100');
+            panel.classList.remove('translate-x-full');
+            panel.classList.add('translate-x-0');
+        }, 10);
+        document.body.style.overflow = 'hidden';
+
+        try {
+            const response = await fetch('/admin/members/' + memberId + '/payments');
+            const html = await response.text();
+            content.innerHTML = html;
+        } catch (e) {
+            content.innerHTML = '<div class="text-center text-red-500 py-8"><p>Gagal memuat data.</p></div>';
+        }
+    }
+</script>
 @endsection

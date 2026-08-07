@@ -15,44 +15,27 @@
         </a>
     </div>
 
-    <div class="relative rounded-2xl overflow-hidden mb-6 shadow-2xl shadow-yellow-500/10">
+    <div class="relative rounded-2xl overflow-hidden mb-6 shadow-2xl shadow-yellow-500/10 aspect-[1.6/1]">
         <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('bg.png') }}');"></div>
-        <div class="absolute inset-0 bg-black/40"></div>
 
-        <div class="relative z-10 p-5">
-            <div class="flex items-center justify-between mb-4">
-                <span class="text-xl font-bold tracking-wider">
-                    <span class="text-white">MEMBER</span><span class="text-gold">CARD</span>
-                </span>
+        <div class="relative z-10 p-5 flex flex-col justify-between h-full">
+            <div class="flex justify-end">
                 <span class="bg-yellow-500/20 text-yellow-400 text-xs font-bold px-3 py-1 rounded-full">
                     {{ $member->membership_package }}
                 </span>
             </div>
 
-            <div class="flex items-center justify-center mb-4">
-                @if($member->photo)
-                    <div class="w-20 h-20 rounded-full border-4 border-yellow-500 overflow-hidden shadow-lg shadow-yellow-500/30">
-                        <img src="{{ asset('storage/' . $member->photo) }}" class="w-full h-full object-cover">
-                    </div>
-                @else
-                    <div class="w-20 h-20 bg-yellow-500 rounded-full flex items-center justify-center border-4 border-yellow-400 shadow-lg shadow-yellow-500/30">
-                        <i class="fas fa-user text-3xl text-black"></i>
-                    </div>
-                @endif
-            </div>
-
-            <div class="text-center mb-4">
-                <p class="text-white font-bold text-lg uppercase tracking-wide">{{ $member->name }}</p>
-                <p class="text-gold text-sm font-medium">{{ $member->member_id }}</p>
-            </div>
-
             <div class="flex items-end justify-between">
                 <div>
-                    <p class="text-gray-300 text-xs">Berlaku sampai</p>
-                    <p class="text-white font-bold text-sm">{{ $member->expired_date->format('d F Y') }}</p>
+                    @if($member->photo)
+                        <div class="w-14 h-14 rounded-full border-2 border-yellow-500 overflow-hidden mb-2">
+                            <img src="{{ asset('storage/' . $member->photo) }}" class="w-full h-full object-cover">
+                        </div>
+                    @endif
+                    <p class="text-gold text-sm font-medium">{{ $member->member_id }}</p>
                 </div>
-                <a href="{{ route('member.card.qr') }}" class="bg-white/90 backdrop-blur p-2.5 rounded-xl hover:bg-white transition shadow-lg">
-                    <i class="fas fa-qrcode text-2xl text-black"></i>
+                <a href="{{ route('member.card.qr') }}" class="bg-white rounded-xl p-2 shadow-lg">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data={{ $member->member_id }}" alt="QR" class="w-20 h-20">
                 </a>
             </div>
         </div>

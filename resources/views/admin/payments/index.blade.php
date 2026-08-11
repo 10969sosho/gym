@@ -52,7 +52,7 @@
                     </td>
                     <td class="px-4 py-3">
                         <div class="flex items-center space-x-2">
-                            <button onclick="openMemberPaymentDrawer({{ $payment->member_id }}, '{{ addslashes($payment->member->name) }}')" class="text-indigo-600 hover:text-indigo-800" title="Detail Customer">
+                            <button onclick="openMemberPaymentDrawer({{ $payment->member_id }}, @js($payment->member->name))" class="text-indigo-600 hover:text-indigo-800" title="Detail Customer">
                                 <i class="fas fa-info-circle"></i>
                             </button>
                             <button onclick="openEditDrawer('paymentDrawer', {
@@ -73,19 +73,6 @@
                                 </button>
                             </form>
                         </div>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="6" class="px-4 py-8 text-center text-gray-500">
-                        <i class="fas fa-money-bill-wave text-3xl text-gray-300 mb-2"></i>
-                        <p>Tidak ada pembayaran ditemukan</p>
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
                     </td>
                 </tr>
                 @empty
@@ -236,6 +223,9 @@
 
         try {
             const response = await fetch('/admin/members/' + memberId + '/payments');
+            if (!response.ok) {
+                throw new Error('Failed to load member payments');
+            }
             const html = await response.text();
             content.innerHTML = html;
         } catch (e) {

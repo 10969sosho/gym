@@ -12,7 +12,9 @@ class PaymentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Payment::with('member')->latest();
+        $query = Payment::with('member')
+            ->whereHas('member')
+            ->latest();
 
         if ($request->search) {
             $query->where(function ($q) use ($request) {
